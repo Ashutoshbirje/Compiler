@@ -1,24 +1,27 @@
 #include <stdio.h>
 #include "lexer.h"
-#include "parser.h"
-#include "symbol_table.h"
 
 int main() {
-    init_symbol_table();
-
     const char *expr = "a = true; b = false; c = a and b;";
     printf("Input: %s\n", expr);
 
     tokenize(expr);
-    ParseNode *root = parse();  // Get the parse tree root
 
-    printf("Symbol Table:\n");
-    for (int i = 0; i < symbol_count; i++) {
-        printf("%s: %d\n", symbols[i].name, symbols[i].value);
+    // Print the tokens
+    printf("Tokens:\n");
+    for (int i = 0; i < token_count; i++) {
+        Token token = tokens[i];
+        const char *token_type;
+        switch (token.type) {
+            case TOKEN_ID: token_type = "IDENTIFIER"; break;
+            case TOKEN_ASSIGN: token_type = "ASSIGN"; break;
+            case TOKEN_AND: token_type = "AND"; break;
+            case TOKEN_OR: token_type = "OR"; break;
+            case TOKEN_BOOL: token_type = "BOOLEAN"; break;
+            default: token_type = "UNKNOWN"; break;
+        }
+        printf("Type: %s, Value: %s\n", token_type, token.value);
     }
-
-    printf("Parse Tree:\n");
-    print_parse_tree(root);  // Print the parse tree
 
     return 0;
 }
