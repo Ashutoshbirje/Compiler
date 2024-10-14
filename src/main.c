@@ -4,6 +4,10 @@
 
 #define MAX_EXPR_LENGTH 100  // Define a maximum length for the expression
 
+void printLine(int width1, int width2) {
+    printf("+%s+%s+\n", "--------------------", "--------------------");
+}
+
 int main() {
     // Open the input file
     FILE *file = fopen("input.txt", "r");
@@ -35,11 +39,15 @@ int main() {
     // Tokenize the expression
     tokenize(expr);
 
-    // Print the tokens
-    printf("Tokens:\n");
+    // Print the tokens in a table format
+    printf("\nTokens:\n");
+    printLine(20, 20); // Header line
+    printf("| %-18s | %-18s |\n", "Token", "Value");
+    printLine(20, 20); // Separator line
     for (int i = 0; i < token_count; i++) {
-        printf("Type: %d, Value: %s\n", tokens[i].type, tokens[i].value);
+        printf("| %-18s | %-18s |\n", getTokenTypeString(tokens[i].type), tokens[i].value);
     }
+    printLine(20, 20); // Footer line
 
     free(expr);  // Free the allocated memory
     return 0;
