@@ -1,1 +1,1 @@
-a = true; b = true; c = a and b;
+a = true; b = true; c = a or b;
