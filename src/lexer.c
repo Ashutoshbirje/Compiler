@@ -19,17 +19,25 @@ void tokenize(const char *expr) {
         if (expr[i] == '=') {
             tokens[token_count++] = (Token){ .value = "=", .type = TOKEN_ASSIGN };
         } else if (strncmp(&expr[i], "and", 3) == 0) {
-            tokens[token_count++] = (Token){ .value = "and", .type = TOKEN_AND };
+            tokens[token_count++] = (Token){ .value = "&", .type = TOKEN_AND };
             i += 2;  // Skip past "and"
         } else if (strncmp(&expr[i], "or", 2) == 0) {
-            tokens[token_count++] = (Token){ .value = "or", .type = TOKEN_OR };
+            tokens[token_count++] = (Token){ .value = "|", .type = TOKEN_OR };
             i += 1;  // Skip past "or"
         } else if (strncmp(&expr[i], "xor", 3) == 0) {
-            tokens[token_count++] = (Token){ .value = "xor", .type = TOKEN_XOR };
+            tokens[token_count++] = (Token){ .value = "^", .type = TOKEN_XOR };
             i += 2;  // Skip past "xor"
         } else if (strncmp(&expr[i], "negation", 8) == 0) {
             tokens[token_count++] = (Token){ .value = "negation", .type = TOKEN_NOT };
             i += 7;  // Skip past "negation"
+        } else if (expr[i] == '|') {
+            tokens[token_count++] = (Token){ .value = "|", .type = TOKEN_OR };  // New token type for bitwise OR
+        } else if (expr[i] == '&') {
+            tokens[token_count++] = (Token){ .value = "&", .type = TOKEN_AND };  // New token type for bitwise OR
+        } else if (expr[i] == '^') {
+            tokens[token_count++] = (Token){ .value = "^", .type = TOKEN_XOR };  // New token type for bitwise OR
+        }  else if (expr[i] == '~') {
+            tokens[token_count++] = (Token){ .value = "~", .type = TOKEN_NOT };  // New token type for bitwise OR
         } else if (expr[i] == ';') {
             // End of statement; do nothing
         } else {
