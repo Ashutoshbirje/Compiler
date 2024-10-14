@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -I./include -Wall -Wextra
-SRC = src/main.c src/lexer.c src/parser.c src/symbol_table.c
+SRC = src/main.c src/lexer.c src/parser.c src/symbol_table.c src/tac.c
 OBJ = $(SRC:.c=.o)
 BUILD_DIR = build
 TARGET = $(BUILD_DIR)/boolean_compiler
