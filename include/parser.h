@@ -1,14 +1,20 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-typedef struct ParseNode {
-    char value[20];  // Node value (e.g., token or expression)
-    struct ParseNode *left;
-    struct ParseNode *right;
-} ParseNode;
+// Define structure for a node in the parse tree
+typedef struct Node {
+    char operator;     // Operator ('&', '|', '^') or '\0' for boolean value (T or F)
+    int value;         // Boolean value (1 for 'T', 0 for 'F') (if it's a value node)
+    struct Node* left; // Left subtree
+    struct Node* right; // Right subtree
+} Node;
 
-ParseNode *create_node(const char *value);  // Helper to create a new node
-ParseNode *parse();  // Returns the root of the parse tree
-void print_parse_tree(ParseNode *root);  // Print the parse tree
+// Function prototypes
+Node* createValueNode(int value);
+Node* createOperatorNode(char operator, Node* left, Node* right);
+int evaluate(Node* root);
+void printParseTree(Node* root, int depth, int position);
+Node* parseExpression(char* expr, int* index);
+void readExpressionFromFile(const char* filename, char* expression);
 
-#endif
+#endif // PARSER_H

@@ -1,1 +1,1 @@
-a = false; b = true; c = a | b; d = c and c; e = ~ a;
+T|F|F&T;
