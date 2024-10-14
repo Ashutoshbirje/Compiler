@@ -1,0 +1,10 @@
+CC = gcc
+CFLAGS = -I./include
+
+all: boolean_compiler
+
+boolean_compiler: src/main.c src/lexer.c src/parser.c src/symbol_table.c
+	$(CC) $(CFLAGS) -o build/boolean_compiler src/main.c src/lexer.c src/parser.c src/symbol_table.c
+
+clean:
+	rm -f build/boolean_compiler
