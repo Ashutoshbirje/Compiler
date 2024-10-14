@@ -1,12 +1,34 @@
-#include <stdio.h>
 #include "parser.h"
 #include "lexer.h"
-#include "symbol_table.h"
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
-void parse() {
-    for (int i = 0; i < token_count; i++) {
-        if (tokens[i].type == TOKEN_ID && tokens[i + 1].type == TOKEN_ASSIGN) {
-            set_symbol_value(tokens[i].value, tokens[i + 2].type == TOKEN_TRUE ? 1 : 0);
-        }
+// Helper function to create a new parse tree node
+ParseNode *create_node(const char *value) {
+    ParseNode *node = (ParseNode *)malloc(sizeof(ParseNode));
+    strcpy(node->value, value);
+    node->left = node->right = NULL;
+    return node;
+}
+
+int current_token = 0;
+
+ParseNode *parse() {
+    printf("Parsing the expression...\n");
+
+    if (current_token < token_count) {
+        ParseNode *node = create_node(tokens[current_token].value);
+        current_token++;
+        return node;  // Return the root of the tree (for now, a single node)
     }
+    return NULL;
+}
+
+void print_parse_tree(ParseNode *root) {
+    if (root == NULL) return;
+
+    printf("Node: %s\n", root->value);
+    print_parse_tree(root->left);
+    print_parse_tree(root->right);
 }

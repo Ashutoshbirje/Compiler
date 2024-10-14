@@ -1,50 +1,23 @@
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
 #include "lexer.h"
+#include <string.h>  // For strncpy
 
-Token tokens[100];
-int token_count = 0;
-
-void add_token(const char *value, TokenType type) {
-    strcpy(tokens[token_count].value, value);
-    tokens[token_count].type = type;
-    token_count++;
-}
+Token tokens[MAX_TOKENS];  // Token array
+int token_count = 0;       // Keeps track of token count
 
 void tokenize(const char *expr) {
-    char buffer[20];
-    int i = 0, j = 0;
+    char temp[20];
+    int pos = 0;
 
-    while (expr[i] != '\0') {
-        if (isspace(expr[i])) {
-            i++;
-            continue;
-        } else if (isalpha(expr[i])) {
-            buffer[j++] = expr[i++];
-            buffer[j] = '\0';
-
-            if (strcmp(buffer, "true") == 0) {
-                add_token(buffer, TOKEN_TRUE);
-            } else if (strcmp(buffer, "false") == 0) {
-                add_token(buffer, TOKEN_FALSE);
-            } else if (strcmp(buffer, "and") == 0) {
-                add_token(buffer, TOKEN_AND);
-            } else if (strcmp(buffer, "or") == 0) {
-                add_token(buffer, TOKEN_OR);
-            } else {
-                add_token(buffer, TOKEN_ID);
+    for (int i = 0; expr[i] != '\0'; i++) {
+        if (expr[i] == ' ' || expr[i] == ';' || expr[i] == '=' || expr[i] == '\0') {
+            if (pos > 0) {
+                temp[pos] = '\0';
+                tokens[token_count++] = (Token){ .value = "", .type = TOKEN_ID };
+                strncpy(tokens[token_count - 1].value, temp, sizeof(tokens[token_count - 1].value) - 1);
+                pos = 0;
             }
-            j = 0;
-        } else if (expr[i] == '=') {
-            add_token("=", TOKEN_ASSIGN);
-            i++;
-        } else if (expr[i] == ';') {
-            add_token(";", TOKEN_SEMICOLON);
-            i++;
         } else {
-            add_token("?", TOKEN_UNKNOWN);
-            i++;
+            temp[pos++] = expr[i];
         }
     }
 }
