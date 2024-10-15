@@ -10,7 +10,9 @@ typedef enum {
     TOKEN_OR,     // 'or' operator
     TOKEN_BOOL,   // Boolean values 'true' or 'false'
     TOKEN_XOR,    // XOR operator
-    TOKEN_NOT     // Negation operator
+    TOKEN_NOT,   // Negation operator
+       TOKEN_LPAREN,  // Left Parenthesis
+    TOKEN_RPAREN   // Right Parenthesis
 } TokenType;
 
 typedef struct {

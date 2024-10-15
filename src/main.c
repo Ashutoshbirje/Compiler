@@ -15,10 +15,11 @@ int isOperator(char ch) {
     return ch == '&' || ch == '|' || ch == '^' || ch == '~';
 }
 
-// Function to check if the expression is valid
+// Function to check if the expression is valid (with parentheses)
 int isValidExpression(const char *expr) {
     int length = strlen(expr);
-    int operandExpected = 1; 
+    int operandExpected = 1;  // Start expecting an operand
+    int openParenCount = 0;   // To keep track of parentheses balance
 
     for (int i = 0; i < length; i++) {
         char ch = expr[i];
@@ -26,19 +27,24 @@ int isValidExpression(const char *expr) {
         // Ignore whitespace
         if (ch == ' ') continue;
 
-        if (ch == 'T' || ch == 'F') {
+        if (ch == '(') {
+            openParenCount++;  // Track opening parentheses
+            operandExpected = 1;  // Expect an operand after '('
+        } else if (ch == ')') {
+            if (openParenCount == 0 || operandExpected) return 0;  // Unmatched ')' or expecting operand
+            openParenCount--;  // Closing a parenthesis
+        } else if (ch == 'T' || ch == 'F') {
             // If operand (T/F), ensure it's in a valid position
             if (!operandExpected) return 0;
             operandExpected = 0;  // After operand, expect an operator
         } else if (isOperator(ch)) {
-            // If operator, handle the logic
             if (ch == '~') {
-                // '~' is allowed to appear before an operand
-                if (!operandExpected) return 0;  // If '~' appears where an operand shouldn't be
+                // '~' is allowed before an operand
+                if (!operandExpected) return 0;
             } else {
                 // For binary operators (&, |, ^), ensure it's after an operand
-                if (operandExpected) return 0;  // Binary operator without prior operand
-                operandExpected = 1;  // After operator, we expect another operand
+                if (operandExpected) return 0;
+                operandExpected = 1;  // After operator, expect an operand
             }
         } else {
             // Invalid character detected
@@ -46,10 +52,8 @@ int isValidExpression(const char *expr) {
         }
     }
 
-    // If we finish with an expected operand, it's an invalid expression
-    if (operandExpected) return 0;
-
-    return 1;  // Valid expression
+    // Ensure parentheses are balanced and no operand is expected at the end
+    return openParenCount == 0 && !operandExpected;
 }
 
 int main() {
@@ -93,7 +97,7 @@ int main() {
     // Tokenize the expression
     tokenize(expr); 
 
-    // Print the token
+    // Print the tokens
     printf("\nTokens:\n");
     printLine();  // Header line
     printf("| %-18s | %-18s |\n", "Token", "Value");
@@ -113,24 +117,22 @@ int main() {
         return 1;
     }
 
-    // Evaluate the parse tree to ensure it's valid
+    // Evaluate the parse tree
     int result = evaluate(parseTree);
 
-    // parse tree
+    // Print the parse tree
     printf("\nGenerated Parse Tree for '%s':\n", expr);
     printParseTree(parseTree, 0, SCREEN_WIDTH / 2);  // Start in the middle
 
-    // result
+    // Print the result
     printf("\nFinal Result at Root: %s\n", result ? "T" : "F");
 
-    // three-address code (TAC)
+    // Generate and print three-address code (TAC)
     printf("\nGenerating Three-Address Code (TAC):\n");
     generate_three_address_code(parseTree);
-
-    // Print the TAC 
     print_TAC();
 
-    // low-level code from TAC
+    // Generate low-level code from TAC
     generate_low_level_code();
 
     free(expr);
