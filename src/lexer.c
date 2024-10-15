@@ -11,9 +11,10 @@ void tokenize(const char *expr) {
 
     for (int i = 0; expr[i] != '\0'; i++) {
         // Skip spaces
-        if (expr[i] == ' ') {
-            continue;
-        }
+    if (expr[i] == ' ' || expr[i] == '(' || expr[i] == ')') {
+       continue;
+    }
+
         
         // Check for operators and keywords
         if (expr[i] == '=') {
@@ -44,8 +45,8 @@ void tokenize(const char *expr) {
             // Handle identifiers and boolean literals
             pos = 0;  // Reset position for the temporary buffer
             while (expr[i] != ' ' && expr[i] != ';' && expr[i] != '=' && 
-                   expr[i] != '&' && expr[i] != '|' && expr[i] != '^' && 
-                   expr[i] != '~' && expr[i] != '\0') {
+            expr[i] != '&' && expr[i] != '|' && expr[i] != '^' && 
+            expr[i] != '~' && expr[i] != '\0' && expr[i] != '(' && expr[i] != ')')  {
                 temp[pos++] = expr[i];
                 i++;
             }
