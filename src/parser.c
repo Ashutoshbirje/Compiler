@@ -15,7 +15,7 @@ Node* createValueNode(int value) {
     return newNode;
 }
 
-// Function to create a new operator node (&, |, ^)
+// Function to create a new operator node (&, |, ^, ~)
 Node* createOperatorNode(char operator, Node* left, Node* right) {
     Node* newNode = (Node*)malloc(sizeof(Node));
     newNode->operator = operator;
@@ -33,7 +33,7 @@ int evaluate(Node* root) {
 
     // Recursively evaluate left and right subtrees
     int leftValue = evaluate(root->left);
-    int rightValue = evaluate(root->right);
+    int rightValue = (root->right != NULL) ? evaluate(root->right) : 0;
 
     // Apply the operator and store the result in the root
     switch (root->operator) {
@@ -45,6 +45,9 @@ int evaluate(Node* root) {
             break;
         case '^':
             root->value = leftValue ^ rightValue;
+            break;
+        case '~':  // Negation case
+            root->value = !leftValue;  // Unary negation
             break;
     }
     return root->value; // Return the result stored in the root
@@ -99,6 +102,10 @@ Node* parseExpression(char* expr, int* index) {
             // Continue parsing for the right operand
             Node* right = parseExpression(expr, index);
             return createOperatorNode(ch, left, right);
+        } else if (ch == '~') {
+            // Handle negation (unary operator)
+            Node* negatedNode = parseExpression(expr, index);
+            return createOperatorNode('~', negatedNode, NULL);
         }
     }
     return left;
