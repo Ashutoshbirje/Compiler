@@ -12,23 +12,22 @@ void tokenize(const char *expr) {
     if (expr[i] == ' ' || expr[i] == '(' || expr[i] == ')') {
        continue;
     }
-
         
-        // Check for operators and keywords
+        // operators and keywords
         if (expr[i] == '=') {
             tokens[token_count++] = (Token){ .value = "=", .type = TOKEN_ASSIGN };
         } else if (strncmp(&expr[i], "and", 3) == 0) {
             tokens[token_count++] = (Token){ .value = "&", .type = TOKEN_AND };
-            i += 2;  // Skip past "and"
+            i += 2;  // "and"
         } else if (strncmp(&expr[i], "or", 2) == 0) {
             tokens[token_count++] = (Token){ .value = "|", .type = TOKEN_OR };
-            i += 1;  // Skip past "or"
+            i += 1;  // "or"
         } else if (strncmp(&expr[i], "xor", 3) == 0) {
             tokens[token_count++] = (Token){ .value = "^", .type = TOKEN_XOR };
-            i += 2;  // Skip past "xor"
+            i += 2;  // "xor"
         } else if (strncmp(&expr[i], "negation", 8) == 0) {
             tokens[token_count++] = (Token){ .value = "negation", .type = TOKEN_NOT };
-            i += 7;  // Skip past "negation"
+            i += 7;  // "negation"
         } else if (expr[i] == '|') {
             tokens[token_count++] = (Token){ .value = "|", .type = TOKEN_OR };  // New token type for bitwise OR
         } else if (expr[i] == '&') {
@@ -38,10 +37,10 @@ void tokenize(const char *expr) {
         }  else if (expr[i] == '~') {
             tokens[token_count++] = (Token){ .value = "~", .type = TOKEN_NOT };  // New token type for bitwise OR
         } else if (expr[i] == ';') {
-            // End of statement; do nothing
+            // Execption
         } else {
             // Handle identifiers and boolean literals
-            pos = 0;  // Reset position for the temporary buffer
+            pos = 0;
             while (expr[i] != ' ' && expr[i] != ';' && expr[i] != '=' && 
             expr[i] != '&' && expr[i] != '|' && expr[i] != '^' && 
             expr[i] != '~' && expr[i] != '\0' && expr[i] != '(' && expr[i] != ')')  {
@@ -59,7 +58,7 @@ void tokenize(const char *expr) {
                 tokens[token_count++] = (Token){ .value = "", .type = TOKEN_ID };
                 strncpy(tokens[token_count - 1].value, temp, sizeof(tokens[token_count - 1].value) - 1);
             }
-            i--;  // Decrement to account for the outer loop's increment
+            i--; 
         }
     }
 }

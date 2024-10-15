@@ -29,5 +29,5 @@ int get_symbol_value(const char *name) {
             return symbols[i].value;
         }
     }
-    return -1;  // Not found
+    return -1;
 }

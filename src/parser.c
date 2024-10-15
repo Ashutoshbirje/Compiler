@@ -4,7 +4,7 @@
 #include "parser.h"
 
 #define SCREEN_WIDTH 80  // Define screen width for center alignment
-#define MAX_EXPRESSION_LENGTH 100  // Maximum length of the boolean expression
+#define MAX_EXPRESSION_LENGTH 100  // Maximum length for bool exp
 
 // Function to create a new value node (T or F)
 Node* createValueNode(int value) {

@@ -1,9 +1,9 @@
 #include <stdio.h>
-#include <stdlib.h>  // For malloc and free
-#include <string.h>  // For strcspn
-#include "lexer.h"
-#include "parser.h"
-#include "tac.h"  // Include TAC functions and declarations
+#include <stdlib.h>     // For malloc and free
+#include <string.h>     // For strcspn
+#include "lexer.h"      // Include lexer functions and declarations
+#include "parser.h"     // Include parser functions and declarations
+#include "tac.h"        // Include TAC functions and declarations
 #include "constants.h"  // Include constants
 
 void printLine() {
@@ -18,7 +18,7 @@ int isOperator(char ch) {
 // Function to check if the expression is valid
 int isValidExpression(const char *expr) {
     int length = strlen(expr);
-    int operandExpected = 1;  // We expect an operand (T or F) at the start
+    int operandExpected = 1; 
 
     for (int i = 0; i < length; i++) {
         char ch = expr[i];
@@ -75,7 +75,7 @@ int main() {
         fclose(file);
         return 1;
     }
-    fclose(file);  // Close the file
+    fclose(file);  // Close file
 
     // Remove trailing newline (if any)
     expr[strcspn(expr, "\n")] = '\0';
@@ -91,9 +91,9 @@ int main() {
     printf("Input: %s\n", expr);
 
     // Tokenize the expression
-    tokenize(expr);  // Assuming this function populates 'tokens' and 'token_count'
+    tokenize(expr); 
 
-    // Print the tokens in a table format
+    // Print the token
     printf("\nTokens:\n");
     printLine();  // Header line
     printf("| %-18s | %-18s |\n", "Token", "Value");
@@ -116,24 +116,23 @@ int main() {
     // Evaluate the parse tree to ensure it's valid
     int result = evaluate(parseTree);
 
-    // Print the parse tree
+    // parse tree
     printf("\nGenerated Parse Tree for '%s':\n", expr);
     printParseTree(parseTree, 0, SCREEN_WIDTH / 2);  // Start in the middle
 
-    // Print the final evaluation result
+    // result
     printf("\nFinal Result at Root: %s\n", result ? "T" : "F");
 
-    // Generate three-address code (TAC)
+    // three-address code (TAC)
     printf("\nGenerating Three-Address Code (TAC):\n");
     generate_three_address_code(parseTree);
 
-    // Print the TAC for debugging
+    // Print the TAC 
     print_TAC();
 
-    // Generate low-level code from TAC
+    // low-level code from TAC
     generate_low_level_code();
 
-    // Free the allocated memory
     free(expr);
 
     return 0;
