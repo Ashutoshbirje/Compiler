@@ -1,16 +1,14 @@
 #include "lexer.h"
-#include <string.h>  // For strncpy
-#include <stdio.h>   // For printf
-
-Token tokens[MAX_TOKENS];  // Token array
-int token_count = 0;       // Keeps track of token count
-
+#include <string.h>  
+#include <stdio.h>   
+Token tokens[MAX_TOKENS]; 
+int token_count = 0;       
 void tokenize(const char *expr) {
-    char temp[20];  // Temporary buffer for identifiers and boolean values
-    int pos = 0;    // Position in temp buffer
+    char temp[20]; 
+    int pos = 0;   
 
     for (int i = 0; expr[i] != '\0'; i++) {
-        // Skip spaces
+        
     if (expr[i] == ' ' || expr[i] == '(' || expr[i] == ')') {
        continue;
     }
